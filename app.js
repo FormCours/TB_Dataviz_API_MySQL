@@ -8,6 +8,9 @@ require('dotenv-flow').config();
 // Récuperation des variables d'environement
 const { PORT, NODE_ENV } = process.env;
 
+// Teste de la connection vers la DB
+require('./utils/db-utils').testDbConnection();
+
 // Création du webserver
 const app = express();
 
