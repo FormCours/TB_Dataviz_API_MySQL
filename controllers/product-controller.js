@@ -1,4 +1,5 @@
 const { Request, Response } = require('express');
+const productModel = require('../models/product-model');
 
 const productController = {
     /**
@@ -7,8 +8,12 @@ const productController = {
      * @param {Response} res 
      */
     getAll: (req, res) => {
-        // TODO Finish this
-        res.sendStatus(501);
+        productModel.getAll()
+            .then(products => {
+                console.log(products);
+
+                res.status(200).json(products);
+            })
     },
 
     /**
@@ -27,8 +32,15 @@ const productController = {
      * @param {Response} res 
      */
     add: (req, res) => {
-        // TODO Finish this
-        res.sendStatus(501);
+        // Idéalement, ajout un systeme de validation de donnée !
+        const body = req.body; // name, description, categoryId, price
+        
+        productModel.insert(body)
+            .then(productId => {
+                res.status(200).json({
+                    message: `Produit ajouté avec l'id ${productId}`
+                });
+            })
     }, 
 
     /**
@@ -38,13 +50,24 @@ const productController = {
      */
     addImage : (req, res) => {
         if(req.file === undefined) {
-            return res.sendStatus(400);
+            return res.status(400).json({
+                message: `Image non valide`
+            });
         }
+
+        // TODO Si une image est déjà défini, le supprimer
         
-        // TODO Finish this
-        console.log(req.file);
-        
-        res.sendStatus(501);
+        productModel.addImage(req.params.id, req.file.filename)
+            .then(isOk => {
+                if(isOk) {
+                    res.status(200).json({
+                        message: `L'image a bien été ajouté`
+                    });
+                }
+                else {
+                    res.sendStatus(404);
+                }
+            });
     },
 
     /**

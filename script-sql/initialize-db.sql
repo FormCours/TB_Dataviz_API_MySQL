@@ -5,7 +5,7 @@ CREATE TABLE `ProductCategory` (
     CONSTRAINT UK_ProductCategory__Name UNIQUE(`Name`)
 );
 
-CREATE TABLE `Product` (
+CREATE TABLE `Product` (  
 	`Product_Id` BIGINT AUTO_INCREMENT,
     `Name` VARCHAR(50) NOT NULL,
     `Description` VARCHAR(500),
