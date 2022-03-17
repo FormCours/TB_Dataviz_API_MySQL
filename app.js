@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const productRouter = require('./routes/product-router');
 
 //Chargement des variables d'environement
 require('dotenv-flow').config();
@@ -15,9 +16,11 @@ const app = express();
 app.use(express.json());
 // - Gestion du CROS
 app.use(cors());
+// - Dossier static
+app.use(express.static('public'));
 
 // Ajout des routers
-// TODO DO it :D
+app.use(productRouter);
 
 // Demarrage de l'API
 app.listen(PORT, () => {
