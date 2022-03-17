@@ -1,0 +1,11 @@
+Dépendences necessaire
+**********************
+ - express : Web Server
+ - cors    : Gestion de « Cross-Origin Resource Sharing »
+ - promise-mysql : Connecteur vers la DB
+ - multer  : Permet de traité les fichiers
+
+ - dotenv-flow : Gestion des fichiers .env
+ - cross-env   : Permet d'initiliser NODE_ENV
+
+ - nodemon : Outils de dev -> Auto-run du script
