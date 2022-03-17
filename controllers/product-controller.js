@@ -37,9 +37,13 @@ const productController = {
      * @param {Response} res 
      */
     addImage : (req, res) => {
+        if(req.file === undefined) {
+            return res.sendStatus(400);
+        }
+        
         // TODO Finish this
-        console.log(req.file.filename);
-
+        console.log(req.file);
+        
         res.sendStatus(501);
     },
 
