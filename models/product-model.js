@@ -31,7 +31,7 @@ const productModel = {
 
             return results.map(data => ({
                 productId: data['Product_Id'],
-                name: data['name'],
+                name: data['Name'],
                 description: data['Description'],
                 categoryId: data['ProductCategory_Id'],
                 price: data['Price'],
@@ -48,17 +48,17 @@ const productModel = {
 
         try {
             db = await createDbConnection();
-            const requestGetById ='SELECT * FROM Product WHERE Product_Id = ?';
+            const requestGetById = 'SELECT * FROM Product WHERE Product_Id = ?';
             const results = await db.query(requestGetById, [productId]);
-            
-            if(results.length !== 1) {
+
+            if (results.length !== 1) {
                 return null;
             }
 
             const data = results[0];
             return ({
                 productId: data['Product_Id'],
-                name: data['name'],
+                name: data['Name'],
                 description: data['Description'],
                 categoryId: data['ProductCategory_Id'],
                 price: data['Price'],
@@ -89,10 +89,17 @@ const productModel = {
         try {
             db = await createDbConnection();
 
+            const requestOldImage = 'SELECT url_image FROM Product WHERE Product_Id = ?';
+            const oldImageResult = await db.query(requestOldImage, [productId]);
+            const oldImage = oldImageResult[0] ? 'product-image/' + oldImageResult[0].url_image : null;
+
             const requestAddImage = 'UPDATE Product SET url_image = ? WHERE Product_Id = ?';
             const result = await db.query(requestAddImage, [filename, productId]);
 
-            return result.affectedRows === 1;
+            return ({
+                isOk: result.affectedRows === 1,
+                oldImage
+            });
         }
         finally {
             db.end();

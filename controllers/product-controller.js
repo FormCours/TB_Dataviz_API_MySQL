@@ -1,5 +1,7 @@
 const { Request, Response } = require('express');
 const productModel = require('../models/product-model');
+const fs = require('fs');
+const path = require('path');
 
 const productController = {
     /**
@@ -27,7 +29,7 @@ const productController = {
                 console.log(product);
 
                 res.status(200).json(product);
-            })
+            });
     },
 
     /**
@@ -59,11 +61,21 @@ const productController = {
             });
         }
 
-        // TODO Si une image est déjà défini, le supprimer
-
+        
         productModel.addImage(req.params.id, req.file.filename)
-            .then(isOk => {
-                if (isOk) {
+        .then(result => {
+            if (result.isOk) {
+                    // Si une image est déjà défini, on la supprime
+                    if (result.oldImage) {
+                        const filename = path.resolve(process.cwd(), 'public', result.oldImage);
+                        console.log(filename);
+
+                        const isExists = fs.existsSync(filename);
+                        if (isExists) {
+                            fs.rm(filename, () => console.log('Old image remove !'));
+                        }
+                    }
+
                     res.status(200).json({
                         message: `L'image a bien été ajouté`
                     });
