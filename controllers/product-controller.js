@@ -13,7 +13,7 @@ const productController = {
                 console.log(products);
 
                 res.status(200).json(products);
-            })
+            });
     },
 
     /**
@@ -22,8 +22,12 @@ const productController = {
      * @param {Response} res 
      */
     getById: (req, res) => {
-        // TODO Finish this
-        res.sendStatus(501);
+        productModel.getById(req.params.id)
+            .then(product => {
+                console.log(product);
+
+                res.status(200).json(product);
+            })
     },
 
     /**
@@ -34,32 +38,32 @@ const productController = {
     add: (req, res) => {
         // Idéalement, ajout un systeme de validation de donnée !
         const body = req.body; // name, description, categoryId, price
-        
+
         productModel.insert(body)
             .then(productId => {
                 res.status(200).json({
                     message: `Produit ajouté avec l'id ${productId}`
                 });
-            })
-    }, 
+            });
+    },
 
     /**
      * Méthode pour l'image d'un produit via son Id 
      * @param {Request} req 
      * @param {Response} res 
      */
-    addImage : (req, res) => {
-        if(req.file === undefined) {
+    addImage: (req, res) => {
+        if (req.file === undefined) {
             return res.status(400).json({
                 message: `Image non valide`
             });
         }
 
         // TODO Si une image est déjà défini, le supprimer
-        
+
         productModel.addImage(req.params.id, req.file.filename)
             .then(isOk => {
-                if(isOk) {
+                if (isOk) {
                     res.status(200).json({
                         message: `L'image a bien été ajouté`
                     });
@@ -85,7 +89,7 @@ const productController = {
      * @param {Request} req 
      * @param {Response} res 
      */
-    delete : (req, res) => {
+    delete: (req, res) => {
         // TODO Finish this
         res.sendStatus(501);
     }

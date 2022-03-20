@@ -48,7 +48,22 @@ const productModel = {
 
         try {
             db = await createDbConnection();
+            const requestGetById ='SELECT * FROM Product WHERE Product_Id = ?';
+            const results = await db.query(requestGetById, [productId]);
+            
+            if(results.length !== 1) {
+                return null;
+            }
 
+            const data = results[0];
+            return ({
+                productId: data['Product_Id'],
+                name: data['name'],
+                description: data['Description'],
+                categoryId: data['ProductCategory_Id'],
+                price: data['Price'],
+                urlImage: 'product-image/' + data['url_image']
+            });
         }
         finally {
             db.end();
