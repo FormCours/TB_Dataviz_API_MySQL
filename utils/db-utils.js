@@ -18,7 +18,7 @@ const testDbConnection = async () => {
     catch (e) {
         console.log('Test connection to MySQL - Error');
         console.log(e.message);
-        process.exit();
+        // process.exit();
     }
 };
 
